@@ -13,11 +13,16 @@ public class LookX : MonoBehaviour
     
     void Update()
     {
+        
         float _mouseX = Input.GetAxis("Mouse X");
+        
 
         Vector3 newRotation = transform.eulerAngles;
         newRotation.y += _mouseX * _sensitivity;
         transform.localEulerAngles = newRotation;
+        Debug.Log("mouse =  " + newRotation.y);
+
+       
 
     }
 }

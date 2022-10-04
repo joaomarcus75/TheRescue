@@ -33,17 +33,40 @@ public class MainCharacter : MonoBehaviour
         
         Vector3  direction = new Vector3(horizontalInput, 0 ,verticalInput);
 
-        if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) )
+        if(Input.GetKey(KeyCode.W))
         {
             direction = new Vector3(0,0,verticalInput);
-             
+        }
+
+        if(Input.GetKey(KeyCode.S))
+        {
+            direction = new Vector3(0,0,verticalInput);
+        }
+        if(Input.GetKey(KeyCode.A)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        }
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        } 
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        } 
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            _speed = 6f;
+        }
+        else
+        {
+            _speed = 3.5f;
         }
         
 
-        if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
-        {
-            direction = new Vector3(0,0,verticalInput);
-        }
+        
+
+
         
         Vector3 velocity = direction * _speed;
              
@@ -56,20 +79,6 @@ public class MainCharacter : MonoBehaviour
         
         AnimationsMovement();
 
-
-        // if(direction != Vector3.zero)
-        // {
-        //     _animator.SetBool("isMoving",true);
-        // }
-        // else
-        // {
-        //     _animator.SetBool("isMoving",false);
-        // }
-
-      
-
-
-
     
     }
 
@@ -78,6 +87,22 @@ public class MainCharacter : MonoBehaviour
         if(Input.GetKey(KeyCode.W))
         {
             _animator.SetBool("isMoving",true);
+
+            if(Input.GetKey(KeyCode.D))
+            {
+              //Debug.Log("W+D");
+              _animator.SetBool("isMoving",false);
+              _animator.SetBool("isMovingRight",true);
+              
+            }
+            if(Input.GetKey(KeyCode.A))
+            {
+              //Debug.Log("W+A");
+              _animator.SetBool("isMoving",false);
+              _animator.SetBool("isMovingLeft",true);
+            }
+          
+            
         }
         else
         {
@@ -102,6 +127,63 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isMovingLeft",false);
         }
+
+
+
+        if(Input.GetKey(KeyCode.S))
+        {
+            _animator.SetBool("isMovingBack",true);
+
+             if(Input.GetKey(KeyCode.D))
+            {
+              //Debug.Log("S+D");
+              _animator.SetBool("isMovingBack",false);
+              _animator.SetBool("isMovingRight",true);
+              
+            }
+            if(Input.GetKey(KeyCode.A))
+            {
+              //Debug.Log("S+A");
+              _animator.SetBool("isMovingBack",false);
+              _animator.SetBool("isMovingLeft",true);
+            }
+        }
+        else
+        {
+            _animator.SetBool("isMovingBack",false);
+        }
+        
+
+
+        //Running in place bug fix
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
+        {
+            _animator.SetBool("isRunningFoward",true);
+        }
+        else
+        {
+            _animator.SetBool("isRunningFoward",false);
+        }
+
+        //Running right side
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D))
+        {
+            _animator.SetBool("isRunningRight",true);
+        }
+        else
+        {
+            _animator.SetBool("isRunningRight",false);
+        }
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A))
+        {
+            _animator.SetBool("isRunningLeft",true);
+        }
+        else
+        {
+            _animator.SetBool("isRunningLeft",false);
+        }
+
+        
 
         
         

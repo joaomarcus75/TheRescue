@@ -20,7 +20,7 @@ public class LookX : MonoBehaviour
         Vector3 newRotation = transform.eulerAngles;
         newRotation.y += _mouseX * _sensitivity;
         transform.localEulerAngles = newRotation;
-        Debug.Log("mouse =  " + newRotation.y);
+        //Debug.Log("mouse =  " + newRotation.y);
 
        
 

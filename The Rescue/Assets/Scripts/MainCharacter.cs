@@ -10,6 +10,7 @@ public class MainCharacter : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     private float _gravity = -9.81f;
+    Vector3 newposition = new Vector3(0,0.029f,0);
     
     void Start()
     {
@@ -20,7 +21,11 @@ public class MainCharacter : MonoBehaviour
     
     void Update()
     {
+
+       
+        
         CalculatedMovement();
+        
         
     }
 
@@ -31,7 +36,10 @@ public class MainCharacter : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         
+        
         Vector3  direction = new Vector3(horizontalInput, 0 ,verticalInput);
+
+        
 
         if(Input.GetKey(KeyCode.W))
         {
@@ -57,6 +65,16 @@ public class MainCharacter : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftShift))
         {
             _speed = 6f;
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) )
+            {
+              direction = new Vector3(0,0,verticalInput);
+
+            }
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) )
+            {
+              direction = new Vector3(0,0,verticalInput);
+
+            }
         }
         else
         {
@@ -64,8 +82,8 @@ public class MainCharacter : MonoBehaviour
         }
         
 
+       
         
-
 
         
         Vector3 velocity = direction * _speed;
@@ -77,14 +95,23 @@ public class MainCharacter : MonoBehaviour
      
         _controller.Move(velocity * Time.deltaTime);
         
-        AnimationsMovement();
+     
+           
+            AnimationsMovement();
+        
+        
 
     
     }
 
     public void AnimationsMovement()
     {
-        if(Input.GetKey(KeyCode.W))
+          
+    if(_controller.isGrounded)
+    {
+       // Debug.Log("ISGROUNDED");
+
+         if(Input.GetKey(KeyCode.W))
         {
             _animator.SetBool("isMoving",true);
 
@@ -159,6 +186,23 @@ public class MainCharacter : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
         {
             _animator.SetBool("isRunningFoward",true);
+
+
+            //old animations while runing
+
+            // if(Input.GetKey(KeyCode.D))
+            // {
+            //     Debug.Log("LeftShift + W + D");
+            //     _animator.SetBool("isRunningFoward",false);
+            //     _animator.SetBool("isRunningRight",true);
+            // }
+            // if(Input.GetKey(KeyCode.A))
+            // {
+            //     Debug.Log("LeftShift + W + D");
+            //     _animator.SetBool("isRunningFoward",false);
+            //     _animator.SetBool("isRunningLeft",true);
+            // }
+
         }
         else
         {
@@ -182,14 +226,47 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isRunningLeft",false);
         }
+ 
 
-        
-
-        
-        
 
 
     }
+    else if(!_controller.isGrounded)
+    {
+        _animator.SetBool("isMoving",false);
+        _animator.SetBool("isMovingRight",false);
+        _animator.SetBool("isMovingLeft",false);
+        _animator.SetBool("isMovingBack",false);
+        _animator.SetBool("isRunningFoward",false);
+        _animator.SetBool("isRunningRight",false);
+        _animator.SetBool("isRunningLeft",false);
+        _animator.SetBool("isFalling",true);
+        _controller.center = newposition;
+
+        Debug.Log("is falling");
+
+        if(_controller.isGrounded)
+        {
+          Debug.Log("landing time");
+          _animator.SetBool("isFalling",false);
+          _animator.SetBool("isLanding",true);
+        }
+          _animator.SetBool("isLanding",false);
+    }
+
+        
+    }
+
+   private void OnCollisionEnter(Collision other) 
+   {
+        if(other.gameObject.tag == "Ground")
+        {
+           Debug.Log("ground hit");
+           
+        }
+
+
+   }
 
 
 }

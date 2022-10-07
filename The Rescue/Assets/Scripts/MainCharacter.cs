@@ -11,6 +11,7 @@ public class MainCharacter : MonoBehaviour
     private float _speed = 3.5f;
     private float _gravity = -9.81f;
     Vector3 newposition = new Vector3(0,0.029f,0);
+    bool isTouchingGround;
     
     void Start()
     {
@@ -226,6 +227,14 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isRunningLeft",false);
         }
+        if(Input.GetKey(KeyCode.Space))
+        {
+            _animator.SetBool("isJumping",true);
+        }
+        else
+        {
+            _animator.SetBool("isJumping",false);
+        }
  
 
 
@@ -241,32 +250,30 @@ public class MainCharacter : MonoBehaviour
         _animator.SetBool("isRunningRight",false);
         _animator.SetBool("isRunningLeft",false);
         _animator.SetBool("isFalling",true);
-        _controller.center = newposition;
+        
+       //_controller.center = newposition;
 
         Debug.Log("is falling");
-
-        if(_controller.isGrounded)
-        {
-          Debug.Log("landing time");
-          _animator.SetBool("isFalling",false);
-          _animator.SetBool("isLanding",true);
-        }
-          _animator.SetBool("isLanding",false);
     }
 
         
     }
 
-   private void OnCollisionEnter(Collision other) 
-   {
-        if(other.gameObject.tag == "Ground")
-        {
-           Debug.Log("ground hit");
-           
-        }
-
-
-   }
+//ground collision detect
+void OnControllerColliderHit(ControllerColliderHit hit) 
+{
+    if(hit.gameObject.tag == "Ground")
+    {
+        //Debug.Log("Is Touching the ground");
+        _animator.SetBool("isFalling",false);
+        _animator.SetBool("isFallingToIdle",true);
+    }
+        
+        
+    
+      
+    
+} 
 
 
 }

@@ -23,10 +23,7 @@ public class MainCharacter : MonoBehaviour
     void Update()
     {
 
-       
-        
         CalculatedMovement();
-        
         
     }
 
@@ -188,29 +185,13 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isRunningFoward",true);
 
-
-            //old animations while runing
-
-            // if(Input.GetKey(KeyCode.D))
-            // {
-            //     Debug.Log("LeftShift + W + D");
-            //     _animator.SetBool("isRunningFoward",false);
-            //     _animator.SetBool("isRunningRight",true);
-            // }
-            // if(Input.GetKey(KeyCode.A))
-            // {
-            //     Debug.Log("LeftShift + W + D");
-            //     _animator.SetBool("isRunningFoward",false);
-            //     _animator.SetBool("isRunningLeft",true);
-            // }
-
         }
         else
         {
             _animator.SetBool("isRunningFoward",false);
         }
 
-        //Running right side
+       //////Running right side
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D))
         {
             _animator.SetBool("isRunningRight",true);
@@ -227,21 +208,29 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isRunningLeft",false);
         }
+
+        ///////// Jump System ///////////
+
         if(Input.GetKey(KeyCode.Space))
         {
-            _animator.SetBool("isJumping",true);
+          _animator.SetBool("isJumping",true);
+         
         }
         else
-        {
+        { 
+            
             _animator.SetBool("isJumping",false);
         }
- 
+        
+     
 
 
 
     }
     else if(!_controller.isGrounded)
     {
+       
+        _animator.SetBool("isJumping",false);
         _animator.SetBool("isMoving",false);
         _animator.SetBool("isMovingRight",false);
         _animator.SetBool("isMovingLeft",false);
@@ -251,9 +240,13 @@ public class MainCharacter : MonoBehaviour
         _animator.SetBool("isRunningLeft",false);
         _animator.SetBool("isFalling",true);
         
+
+        
        //_controller.center = newposition;
 
-        Debug.Log("is falling");
+        Debug.Log("Is falling");
+        StartCoroutine(FallTime());
+        _animator.SetBool("isFallingToIdle",false); 
     }
 
         
@@ -262,18 +255,35 @@ public class MainCharacter : MonoBehaviour
 //ground collision detect
 void OnControllerColliderHit(ControllerColliderHit hit) 
 {
+
     if(hit.gameObject.tag == "Ground")
     {
-        //Debug.Log("Is Touching the ground");
+        Debug.Log("Is Grounded"); 
         _animator.SetBool("isFalling",false);
         _animator.SetBool("isFallingToIdle",true);
     }
-        
-        
+   
+
     
-      
-    
+
 } 
+
+
+
+IEnumerator FallTime()
+{
+    
+    yield return new WaitForSeconds(5.0f);
+    _animator.SetBool("isFreeFall",true);
+    
+    
+}
+
+
+
+
+
+
 
 
 }

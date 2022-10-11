@@ -15,8 +15,10 @@ public class MainCharacter : MonoBehaviour
     
     void Start()
     {
+
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+
     }
 
     
@@ -24,6 +26,7 @@ public class MainCharacter : MonoBehaviour
     {
 
         CalculatedMovement();
+       
         
     }
 
@@ -31,11 +34,15 @@ public class MainCharacter : MonoBehaviour
 
     public void CalculatedMovement()
     {
+        
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        float jump = Input.GetAxis("Jump");
         
         
         Vector3  direction = new Vector3(horizontalInput, 0 ,verticalInput);
+        
+
 
         
 
@@ -67,17 +74,27 @@ public class MainCharacter : MonoBehaviour
             {
               direction = new Vector3(0,0,verticalInput);
 
+
             }
             if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) )
             {
               direction = new Vector3(0,0,verticalInput);
 
             }
+            //JUMP SYSTEM
+            if(Input.GetKey(KeyCode.Space))
+            { 
+              direction = new Vector3(0,jump,verticalInput);
+            }
+            
         }
         else
         {
             _speed = 3.5f;
         }
+
+        
+        
         
 
        
@@ -95,7 +112,7 @@ public class MainCharacter : MonoBehaviour
         
      
            
-            AnimationsMovement();
+        AnimationsMovement();
         
         
 
@@ -180,21 +197,49 @@ public class MainCharacter : MonoBehaviour
         
 
 
-        //Running in place bug fix
+        //Running Foward and Backward
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
         {
             _animator.SetBool("isRunningFoward",true);
-
         }
         else
         {
             _animator.SetBool("isRunningFoward",false);
         }
 
+         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.S))
+        {
+            _animator.SetBool("isRuningBackward",true);
+            if( Input.GetKey(KeyCode.D))
+            {
+                _animator.SetBool("isRuningBackward",false);
+                _animator.SetBool("isRunningRight",true);
+            }
+            if( Input.GetKey(KeyCode.A))
+            {
+                _animator.SetBool("isRuningBackward",false);
+                _animator.SetBool("isRunningLeft",true);
+            }
+        }
+         else
+        {
+            _animator.SetBool("isRuningBackward",false);
+        }
+
        //////Running right side
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D))
         {
+            
             _animator.SetBool("isRunningRight",true);
+            
+            if(Input.GetKey(KeyCode.W))
+            {
+                
+                _animator.SetBool("isRunningRight",false);
+                _animator.SetBool("isMovingRight",false);
+                _animator.SetBool("isMoving",true);
+                _animator.SetBool("isRunningFoward",true);
+            }
         }
         else
         {
@@ -203,18 +248,31 @@ public class MainCharacter : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A))
         {
             _animator.SetBool("isRunningLeft",true);
+
+            if(Input.GetKey(KeyCode.W))
+            {
+                
+                _animator.SetBool("isRunningLeft",false);
+                _animator.SetBool("isMovingLeft",false);
+                _animator.SetBool("isMoving",true);
+                _animator.SetBool("isRunningFoward",true);
+            }
         }
         else
         {
             _animator.SetBool("isRunningLeft",false);
         }
 
+        
+
+        
+
         ///////// Jump System ///////////
 
         if(Input.GetKey(KeyCode.Space))
         {
           _animator.SetBool("isJumping",true);
-         
+                   
         }
         else
         { 
@@ -258,7 +316,7 @@ void OnControllerColliderHit(ControllerColliderHit hit)
 
     if(hit.gameObject.tag == "Ground")
     {
-        Debug.Log("Is Grounded"); 
+        //Debug.Log("Is Grounded"); 
         _animator.SetBool("isFalling",false);
         _animator.SetBool("isFallingToIdle",true);
     }
@@ -272,12 +330,10 @@ void OnControllerColliderHit(ControllerColliderHit hit)
 
 IEnumerator FallTime()
 {
-    
     yield return new WaitForSeconds(5.0f);
     _animator.SetBool("isFreeFall",true);
-    
-    
 }
+
 
 
 

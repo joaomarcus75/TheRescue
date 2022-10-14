@@ -7,10 +7,13 @@ public class MainCharacter : MonoBehaviour
     private CharacterController _controller;
     private Animator _animator;
     
+    Vector3 lookPos;
+      
+    
     [SerializeField]
     private float _speed = 3.5f;
     private float _gravity = -9.81f;
-    Vector3 newposition = new Vector3(0,0.029f,0);
+    //Vector3 newposition = new Vector3(0,0.029f,0);
     bool isTouchingGround;
     
     void Start()
@@ -19,6 +22,9 @@ public class MainCharacter : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
 
+         
+
+
     }
 
     
@@ -26,25 +32,32 @@ public class MainCharacter : MonoBehaviour
     {
 
         CalculatedMovement();
-       
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray,out hit,100))
+        {
+           lookPos = hit.point;
+        }
+
+        Vector3 lookDirection = lookPos - transform.position;
+        lookDirection.y = 0;
+
+        transform.LookAt(transform.position + lookDirection,Vector3.up);
         
     }
 
-    
-
     public void CalculatedMovement()
     {
-        
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        float jump = Input.GetAxis("Jump");
+       
         
-        
-        Vector3  direction = new Vector3(horizontalInput, 0 ,verticalInput);
-        
+        Vector3 direction = new Vector3(horizontalInput, 0 ,verticalInput);
 
-
-        
+      
 
         if(Input.GetKey(KeyCode.W))
         {
@@ -81,11 +94,7 @@ public class MainCharacter : MonoBehaviour
               direction = new Vector3(0,0,verticalInput);
 
             }
-            //JUMP SYSTEM
-            if(Input.GetKey(KeyCode.Space))
-            { 
-              direction = new Vector3(0,jump,verticalInput);
-            }
+            
             
         }
         else
@@ -93,11 +102,6 @@ public class MainCharacter : MonoBehaviour
             _speed = 3.5f;
         }
 
-        
-        
-        
-
-       
         
 
         
@@ -114,8 +118,6 @@ public class MainCharacter : MonoBehaviour
            
         AnimationsMovement();
         
-        
-
     
     }
 
@@ -312,7 +314,7 @@ public class MainCharacter : MonoBehaviour
 
 //ground collision detect
 void OnControllerColliderHit(ControllerColliderHit hit) 
-{
+  {
 
     if(hit.gameObject.tag == "Ground")
     {
@@ -320,19 +322,33 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         _animator.SetBool("isFalling",false);
         _animator.SetBool("isFallingToIdle",true);
     }
-   
+      
 
     
 
-} 
+  } 
 
 
 
 IEnumerator FallTime()
-{
-    yield return new WaitForSeconds(5.0f);
+  {
+    yield return new WaitForSeconds(7.0f);
     _animator.SetBool("isFreeFall",true);
-}
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -6,7 +6,9 @@ public class PickUp : MonoBehaviour
 {
     public Transform Hand;
     MainCharacter mainCharacter;
-       
+    private Animator _animator;
+
+    
     void OnMouseDown() 
     {
         GetComponent<BoxCollider>().enabled = false;
@@ -22,11 +24,6 @@ public class PickUp : MonoBehaviour
        this.transform.parent = null;
        GetComponent<Rigidbody>().useGravity = true;
        GetComponent<Rigidbody>().freezeRotation = false;
-       //GetComponent<Rigidbody>().AddForce(-transform.forward * 500f);
-       
-       
-       
-
     }
 
     

@@ -33,18 +33,7 @@ public class MainCharacter : MonoBehaviour
 
         CalculatedMovement();
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray,out hit,100))
-        {
-           lookPos = hit.point;
-        }
-
-        Vector3 lookDirection = lookPos - transform.position;
-        lookDirection.y = 0;
-
-        transform.LookAt(transform.position + lookDirection,Vector3.up);
+        MoveCameraSytem();
         
     }
 
@@ -126,22 +115,64 @@ public class MainCharacter : MonoBehaviour
           
     if(_controller.isGrounded)
     {
-       // Debug.Log("ISGROUNDED");
+       
+        RegularMovingAnimation();
+        RunningAnimations();
+        JumpAnimation();
+        PointAnimation();
+    }
+    else if(!_controller.isGrounded)
+    {
+        _animator.SetBool("isJumping",false);
+        _animator.SetBool("isMoving",false);
+        _animator.SetBool("isMovingRight",false);
+        _animator.SetBool("isMovingLeft",false);
+        _animator.SetBool("isMovingBack",false);
+        _animator.SetBool("isRunningFoward",false);
+        _animator.SetBool("isRunningRight",false);
+        _animator.SetBool("isRunningLeft",false);
+        _animator.SetBool("isFalling",true);
+       
+        
+        StartCoroutine(FallTime());
+        _animator.SetBool("isFallingToIdle",false); 
+    }
 
-         if(Input.GetKey(KeyCode.W))
+        
+    }
+
+//ground collision detect
+void OnControllerColliderHit(ControllerColliderHit hit) 
+  {
+
+    if(hit.gameObject.tag == "Ground")
+    {
+        //Debug.Log("Is Grounded"); 
+        _animator.SetBool("isFalling",false);
+        _animator.SetBool("isFallingToIdle",true);
+    }
+      
+
+    
+
+  } 
+
+  void RegularMovingAnimation()
+  {
+     if(Input.GetKey(KeyCode.W))
         {
             _animator.SetBool("isMoving",true);
 
             if(Input.GetKey(KeyCode.D))
             {
-              //Debug.Log("W+D");
+              
               _animator.SetBool("isMoving",false);
               _animator.SetBool("isMovingRight",true);
               
             }
             if(Input.GetKey(KeyCode.A))
             {
-              //Debug.Log("W+A");
+              
               _animator.SetBool("isMoving",false);
               _animator.SetBool("isMovingLeft",true);
             }
@@ -152,7 +183,6 @@ public class MainCharacter : MonoBehaviour
         {
            _animator.SetBool("isMoving",false);
         }
-
 
         if (Input.GetKey(KeyCode.D))
         {
@@ -171,8 +201,6 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isMovingLeft",false);
         }
-
-
 
         if(Input.GetKey(KeyCode.S))
         {
@@ -196,9 +224,11 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isMovingBack",false);
         }
-        
+  }
 
-
+  void RunningAnimations()
+  {
+    
         //Running Foward and Backward
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
         {
@@ -264,14 +294,10 @@ public class MainCharacter : MonoBehaviour
         {
             _animator.SetBool("isRunningLeft",false);
         }
-
-        
-
-        
-
-        ///////// Jump System ///////////
-
-        if(Input.GetKey(KeyCode.Space))
+  } 
+    void JumpAnimation()
+    {
+          if(Input.GetKey(KeyCode.Space))
         {
           _animator.SetBool("isJumping",true);
                    
@@ -281,52 +307,39 @@ public class MainCharacter : MonoBehaviour
             
             _animator.SetBool("isJumping",false);
         }
-        
-     
-
-
-
     }
-    else if(!_controller.isGrounded)
+
+    void PointAnimation()
     {
-       
-        _animator.SetBool("isJumping",false);
-        _animator.SetBool("isMoving",false);
-        _animator.SetBool("isMovingRight",false);
-        _animator.SetBool("isMovingLeft",false);
-        _animator.SetBool("isMovingBack",false);
-        _animator.SetBool("isRunningFoward",false);
-        _animator.SetBool("isRunningRight",false);
-        _animator.SetBool("isRunningLeft",false);
-        _animator.SetBool("isFalling",true);
         
-
-        
-       //_controller.center = newposition;
-
-        Debug.Log("Is falling");
-        StartCoroutine(FallTime());
-        _animator.SetBool("isFallingToIdle",false); 
+        if(Input.GetKey(KeyCode.Mouse0))
+        {
+           _animator.SetBool("isPoint",true);
+        }
+        else
+        {
+            _animator.SetBool("isPoint",false);
+        }
     }
 
-        
-    }
-
-//ground collision detect
-void OnControllerColliderHit(ControllerColliderHit hit) 
-  {
-
-    if(hit.gameObject.tag == "Ground")
+    void MoveCameraSytem()
     {
-        //Debug.Log("Is Grounded"); 
-        _animator.SetBool("isFalling",false);
-        _animator.SetBool("isFallingToIdle",true);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray,out hit,100))
+        {
+           lookPos = hit.point;
+        }
+
+        Vector3 lookDirection = lookPos - transform.position;
+        lookDirection.y = 0;
+
+        transform.LookAt(transform.position + lookDirection,Vector3.up);
     }
-      
 
-    
 
-  } 
+ 
 
 
 

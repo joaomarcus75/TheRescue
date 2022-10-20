@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,21 +7,34 @@ public class MainCharacter : MonoBehaviour
 {
     private CharacterController _controller;
     private Animator _animator;
-    
+    //
     Vector3 lookPos;
       
     
-    [SerializeField]
-    private float _speed = 3.5f;
-    private float _gravity = -9.81f;
-    //Vector3 newposition = new Vector3(0,0.029f,0);
+    [SerializeField] private float _speed = 2f;
+    [SerializeField]private float _gravity = 1f;
+   
+    [SerializeField]private float jumpspeed = 5f;
+    [SerializeField]private float _temporaryVelocityY;
+
     bool isTouchingGround;
+
+    Vector3 direction;
+    Vector3 velocity;
+    float horizontalInput;
+    float verticalInput;
     
     void Start()
     {
 
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        
+
+        
+       
+        
+
 
          
 
@@ -30,79 +44,27 @@ public class MainCharacter : MonoBehaviour
     
     void Update()
     {
-
         CalculatedMovement();
 
-        MoveCameraSytem();
+        CharacterRotation();
+
+       // CameraSystem();
+        
         
     }
+
+   // private void CameraSystem()
+   // {
+   
+            
+        
+  //  }
 
     public void CalculatedMovement()
     {
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-       
         
-        Vector3 direction = new Vector3(horizontalInput, 0 ,verticalInput);
-
-      
-
-        if(Input.GetKey(KeyCode.W))
-        {
-            direction = new Vector3(0,0,verticalInput);
-        }
-
-        if(Input.GetKey(KeyCode.S))
-        {
-            direction = new Vector3(0,0,verticalInput);
-        }
-        if(Input.GetKey(KeyCode.A)) 
-        {
-            direction = new Vector3(horizontalInput,0,0);
-        }
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) 
-        {
-            direction = new Vector3(horizontalInput,0,0);
-        } 
-        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) 
-        {
-            direction = new Vector3(horizontalInput,0,0);
-        } 
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            _speed = 6f;
-            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) )
-            {
-              direction = new Vector3(0,0,verticalInput);
-
-
-            }
-            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) )
-            {
-              direction = new Vector3(0,0,verticalInput);
-
-            }
-            
-            
-        }
-        else
-        {
-            _speed = 3.5f;
-        }
-
-        
-
-        
-        Vector3 velocity = direction * _speed;
-             
-        velocity.y = _gravity;
-        velocity = transform.transform.TransformDirection(velocity);
-
-        
-     
-        _controller.Move(velocity * Time.deltaTime);
-        
+        MovementationCombined();
      
            
         AnimationsMovement();
@@ -112,36 +74,18 @@ public class MainCharacter : MonoBehaviour
 
     public void AnimationsMovement()
     {
-          
-    if(_controller.isGrounded)
-    {
-       
-        RegularMovingAnimation();
-        RunningAnimations();
-        JumpAnimation();
-        PointAnimation();
-    }
-    else if(!_controller.isGrounded)
-    {
-        _animator.SetBool("isJumping",false);
-        _animator.SetBool("isMoving",false);
-        _animator.SetBool("isMovingRight",false);
-        _animator.SetBool("isMovingLeft",false);
-        _animator.SetBool("isMovingBack",false);
-        _animator.SetBool("isRunningFoward",false);
-        _animator.SetBool("isRunningRight",false);
-        _animator.SetBool("isRunningLeft",false);
-        _animator.SetBool("isFalling",true);
-       
-        
-        StartCoroutine(FallTime());
-        _animator.SetBool("isFallingToIdle",false); 
+          if(_controller.isGrounded)
+       {
+         RegularMovingAnimation();
+         RunningAnimations();
+         JumpAnimation();
+         PointAnimation();
+         
+       }
     }
 
-        
-    }
 
-//ground collision detect
+
 void OnControllerColliderHit(ControllerColliderHit hit) 
   {
 
@@ -297,16 +241,17 @@ void OnControllerColliderHit(ControllerColliderHit hit)
   } 
     void JumpAnimation()
     {
-          if(Input.GetKey(KeyCode.Space))
+          if(Input.GetKeyDown(KeyCode.Space))
         {
-          _animator.SetBool("isJumping",true);
+          _animator.SetBool("isRunToJumping",true);
                    
         }
         else
         { 
             
-            _animator.SetBool("isJumping",false);
+            _animator.SetBool("isRunToJumping",false);
         }
+        
     }
 
     void PointAnimation()
@@ -322,7 +267,7 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         }
     }
 
-    void MoveCameraSytem()
+    void CharacterRotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -338,16 +283,99 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         transform.LookAt(transform.position + lookDirection,Vector3.up);
     }
 
+    void MovementationCombined()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+       
+        
+        direction = new Vector3(horizontalInput, 0 ,verticalInput);
 
+      
+
+        if(Input.GetKey(KeyCode.W))
+        {
+            direction = new Vector3(0,0,verticalInput);
+        }
+
+        if(Input.GetKey(KeyCode.S))
+        {
+            direction = new Vector3(0,0,verticalInput);
+        }
+        if(Input.GetKey(KeyCode.A)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        }
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        } 
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) 
+        {
+            direction = new Vector3(horizontalInput,0,0);
+        } 
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            _speed = 6f;
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) )
+            {
+              direction = new Vector3(0,0,verticalInput);
+
+
+            }
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) )
+            {
+              direction = new Vector3(0,0,verticalInput);
+
+            }
+        }
+        else
+        {
+            _speed = 2f;    
+        }
+
+               
+        velocity = direction * _speed;
+             
+        _temporaryVelocityY -= _gravity;
+
+        velocity.y = _temporaryVelocityY;
+
+        velocity = transform.transform.TransformDirection(velocity);
+
+
+       
+        Jump();
+     
+        _controller.Move(velocity * Time.deltaTime);
+    }
+
+    void Jump()
+    {
+        if(Input.GetButtonDown("Jump") && _controller.isGrounded)
+        {
+          _temporaryVelocityY = jumpspeed;
+          
+        }
+        if(_temporaryVelocityY > 0)
+        {
+             Debug.Log("foi");
+            // StartCoroutine(jumpTime());
+        }
+    }
+
+IEnumerator jumpTime()
+{
+    _gravity -= 1;
+    yield return new WaitForSeconds(0.5f);
+    _gravity -= -1;
+
+}
  
 
 
 
-IEnumerator FallTime()
-  {
-    yield return new WaitForSeconds(7.0f);
-    _animator.SetBool("isFreeFall",true);
-  }
+
 
 
 

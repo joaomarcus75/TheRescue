@@ -23,7 +23,7 @@ void Start()
          
         
         Debug.Log("Main character touch");
-        rigid.AddForce(-transform.forward * 100);
+        rigid.AddForce(-transform.forward * 150);
         
                
      }

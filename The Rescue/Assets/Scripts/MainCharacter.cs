@@ -79,8 +79,6 @@ public class MainCharacter : MonoBehaviour
          RegularMovingAnimation();
          RunningAnimations();
          JumpAnimation();
-         PointAnimation();
-         
        }
     }
 
@@ -254,18 +252,9 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         
     }
 
-    void PointAnimation()
-    {
-        
-        if(Input.GetKey(KeyCode.Mouse0))
-        {
-           _animator.SetBool("isPoint",true);
-        }
-        else
-        {
-            _animator.SetBool("isPoint",false);
-        }
-    }
+  
+
+    
 
     void CharacterRotation()
     {

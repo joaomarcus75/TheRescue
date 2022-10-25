@@ -20,7 +20,7 @@ public class PickUp : MonoBehaviour
     void OnMouseUp() 
     {
        GetComponent<BoxCollider>().enabled = true;
-       GetComponent<Rigidbody>().AddForce(this.transform.parent.forward * 500f);
+       GetComponent<Rigidbody>().AddForce(this.transform.parent.forward * 1500f);
        this.transform.parent = null;
        GetComponent<Rigidbody>().useGravity = true;
        GetComponent<Rigidbody>().freezeRotation = false;

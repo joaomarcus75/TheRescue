@@ -15,7 +15,7 @@ public class MainCharacter : MonoBehaviour
     [SerializeField]private float _gravity = 1f;
    
     [SerializeField]private float jumpspeed = 5f;
-    [SerializeField]private float _temporaryVelocityY;
+    public float _temporaryVelocityY;
 
     bool isTouchingGround;
 
@@ -150,14 +150,14 @@ void OnControllerColliderHit(ControllerColliderHit hit)
 
              if(Input.GetKey(KeyCode.D))
             {
-              //Debug.Log("S+D");
+              
               _animator.SetBool("isMovingBack",false);
               _animator.SetBool("isMovingRight",true);
               
             }
             if(Input.GetKey(KeyCode.A))
             {
-              //Debug.Log("S+A");
+              
               _animator.SetBool("isMovingBack",false);
               _animator.SetBool("isMovingLeft",true);
             }
@@ -346,11 +346,7 @@ void OnControllerColliderHit(ControllerColliderHit hit)
           _temporaryVelocityY = jumpspeed;
           
         }
-        if(_temporaryVelocityY > 0)
-        {
-             Debug.Log("foi");
-            // StartCoroutine(jumpTime());
-        }
+       
     }
 
 IEnumerator jumpTime()

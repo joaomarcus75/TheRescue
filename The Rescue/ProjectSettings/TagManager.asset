@@ -8,6 +8,7 @@ TagManager:
   - InteractiveObjects
   - MainCharacter
   - Hand
+  - IgnoreWall
   layers:
   - Default
   - TransparentFX

@@ -19,6 +19,11 @@ public class SlowMotion : MonoBehaviour
     
     void Update()
     {
+      SlowMotionInput();
+    }
+
+    public void SlowMotionInput()
+    {
         if(Input.GetKey(KeyCode.R))
         {
             StartSlowMotion();
@@ -29,12 +34,12 @@ public class SlowMotion : MonoBehaviour
         }
     }
     
-    private void StartSlowMotion()
+    public void StartSlowMotion()
     {
         Time.timeScale = slowMotionTimeScale;
         Time.fixedDeltaTime = _startFixedDeltaTime * slowMotionTimeScale;
     }
-    private void StopSlowMotion()
+    public void StopSlowMotion()
     {
         Time.timeScale =_startTimeScale;
         Time.fixedDeltaTime = _startFixedDeltaTime;

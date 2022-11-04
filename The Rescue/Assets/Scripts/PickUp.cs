@@ -7,15 +7,21 @@ public class PickUp : MonoBehaviour
     public Transform Hand;
     MainCharacter mainCharacter;
     private Animator _animator;
+   
+    private float slowMotionTimeScale = 0.1f;
+    private float _startTimeScale;
+    private float _startFixedDeltaTime;
 
-    
+   
+   
     void OnMouseDown() 
     {
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<BoxCollider>().enabled = false; 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().freezeRotation = true;
         this.transform.position = Hand.position;
         this.transform.parent = GameObject.Find("Hand").transform;
+        
     }
     void OnMouseUp() 
     {

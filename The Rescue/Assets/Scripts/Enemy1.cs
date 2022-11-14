@@ -13,6 +13,9 @@ public class Enemy1 : MonoBehaviour
     private CharacterController _controller;
     [SerializeField] private Transform movePositionTransform;
     private NavMeshAgent _navMeshAgent;
+    private Animator _animator;
+
+    private Collider _colider;
     Vector3 direction;
     Vector3 velocity;
     
@@ -24,19 +27,46 @@ public class Enemy1 : MonoBehaviour
     void Start()
     {
        _controller = GetComponent<CharacterController>(); 
+       _animator = GetComponent<Animator>();
+       _colider = GetComponent<Collider>();
     }
 
     
     void Update()
     {
-    //     velocity = direction * _speed;
-    //    _temporaryVelocityY -= _gravity;
-    //     velocity.y = _temporaryVelocityY;
-    //    velocity = transform.transform.TransformDirection( velocity);
-       
-    //    _controller.Move(velocity * Time.deltaTime);
-      
+       NavMeshEnemy();
+    }
 
+    void NavMeshEnemy()
+    {
        _navMeshAgent.destination = movePositionTransform.position;
     }
-}
+
+
+    private void OnTriggerStay(Collider other) 
+    {
+        if(other.gameObject.tag == "MainCharacter")
+        {
+            Debug.Log("hit");
+            _navMeshAgent.speed = 0;
+            _animator.SetBool("isPunching",true);
+            _colider.isTrigger = false;
+            
+        }
+        
+        
+    }
+    private void OnTriggerExit(Collider other) 
+    {
+        if(other.gameObject.tag == "MainCharacter")
+        {
+            Debug.Log("out hit");
+            _navMeshAgent.speed = 3.0f;
+            _animator.SetBool("isPunching",false);
+            _colider.isTrigger = true;
+            
+        }
+        
+    }
+
+ }

@@ -26,19 +26,8 @@ public class MainCharacter : MonoBehaviour
     
     void Start()
     {
-
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        
-
-        
-       
-        
-
-
-         
-
-
     }
 
     
@@ -48,28 +37,13 @@ public class MainCharacter : MonoBehaviour
 
         CharacterRotation();
 
-       // CameraSystem();
-        
-        
     }
-
-   // private void CameraSystem()
-   // {
-   
-            
-        
-  //  }
 
     public void CalculatedMovement()
     {
-
         
         MovementationCombined();
-     
-           
         AnimationsMovement();
-        
-    
     }
 
     public void AnimationsMovement()
@@ -93,9 +67,6 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         _animator.SetBool("isFalling",false);
         _animator.SetBool("isFallingToIdle",true);
     }
-      
-
-    
 
   } 
 
@@ -170,7 +141,6 @@ void OnControllerColliderHit(ControllerColliderHit hit)
 
   void RunningAnimations()
   {
-    
         //Running Foward and Backward
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
         {

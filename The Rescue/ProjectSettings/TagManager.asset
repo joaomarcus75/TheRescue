@@ -9,6 +9,7 @@ TagManager:
   - MainCharacter
   - Hand
   - IgnoreWall
+  - Enemy
   layers:
   - Default
   - TransparentFX

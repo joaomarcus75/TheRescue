@@ -6,8 +6,9 @@ using UnityEngine;
 public class MainCharacter : MonoBehaviour
 {
     private CharacterController _controller;
-    private Animator _animator;
-    //
+    public Animator _animator;
+    public Enemy1 _enemy1;
+    
     Vector3 lookPos;
       
     
@@ -18,25 +19,53 @@ public class MainCharacter : MonoBehaviour
     public float _temporaryVelocityY;
 
     bool isTouchingGround;
+   
 
     Vector3 direction;
     Vector3 velocity;
     float horizontalInput;
     float verticalInput;
+
+    void Awake()
+    {
+       
+        
+       
+
+    }
     
     void Start()
     {
+        
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        
+        
     }
 
     
     void Update()
     {
+        //Debug.Log(Enemy1._mainCharacterHitted);
+        
+        HittedByEnemy1Animation();
+
         CalculatedMovement();
 
         CharacterRotation();
 
+    }
+
+    private void HittedByEnemy1Animation()
+    {
+        if(Enemy1._mainCharacterHitted == true)
+        {
+            _animator.SetBool("isHitted",true);
+        }
+        else
+        {
+            _animator.SetBool("isHitted",false);
+        }
     }
 
     public void CalculatedMovement()
@@ -44,12 +73,14 @@ public class MainCharacter : MonoBehaviour
         
         MovementationCombined();
         AnimationsMovement();
+        
     }
 
     public void AnimationsMovement()
     {
           if(_controller.isGrounded)
        {
+         
          RegularMovingAnimation();
          RunningAnimations();
          JumpAnimation();
@@ -221,8 +252,7 @@ void OnControllerColliderHit(ControllerColliderHit hit)
         }
         
     }
-
-  
+    
 
     
 
@@ -326,7 +356,10 @@ IEnumerator jumpTime()
     _gravity -= -1;
 
 }
- 
+
+
+
+
 
 
 

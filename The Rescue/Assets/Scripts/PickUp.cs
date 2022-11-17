@@ -16,7 +16,7 @@ public class PickUp : MonoBehaviour
    
     void OnMouseDown() 
     {
-        GetComponent<BoxCollider>().enabled = false; 
+       // GetComponent<BoxCollider>().enabled = false; 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().freezeRotation = true;
         this.transform.position = Hand.position;
@@ -25,8 +25,8 @@ public class PickUp : MonoBehaviour
     }
     void OnMouseUp() 
     {
-       GetComponent<BoxCollider>().enabled = true;
-       GetComponent<Rigidbody>().AddForce(this.transform.parent.forward * 1500f);
+       //GetComponent<BoxCollider>().enabled = true;
+       GetComponent<Rigidbody>().AddForce(this.transform.parent.forward * 1000f);
        this.transform.parent = null;
        GetComponent<Rigidbody>().useGravity = true;
        GetComponent<Rigidbody>().freezeRotation = false;

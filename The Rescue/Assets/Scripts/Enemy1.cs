@@ -65,6 +65,14 @@ public class Enemy1 : MonoBehaviour
            //USE RAGDOLL SYSTEM TO MAKE OUR MAIN CHARACTER BE HITTED
             //Debug.Log(_mainCharacterHitted);
         }
+         
+
+
+        if(other.gameObject.tag == "InteractiveObjects")
+        {
+            _colider.isTrigger = false;
+            _animator.SetBool("isEnemyHitted",true);
+        }
         
         
     }
@@ -78,6 +86,13 @@ public class Enemy1 : MonoBehaviour
             _navMeshAgent.speed = 4.0f;
            // Debug.Log(_mainCharacterHitted);
         }
+
+         if(other.gameObject.tag == "InteractiveObjects")
+        {
+             _colider.isTrigger = true;
+            _animator.SetBool("isEnemyHitted",false);
+        }
+
         
     }
 

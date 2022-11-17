@@ -9,6 +9,7 @@ public class MainCharacter : MonoBehaviour
     public Animator _animator;
     public Enemy1 _enemy1;
     
+    
     Vector3 lookPos;
       
     

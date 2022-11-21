@@ -8,6 +8,7 @@ public class MainCharacter : MonoBehaviour
     private CharacterController _controller;
     public Animator _animator;
     public Enemy1 _enemy1;
+    public int Life = 3;
     
     
     Vector3 lookPos;
@@ -54,14 +55,19 @@ public class MainCharacter : MonoBehaviour
         CalculatedMovement();
 
         CharacterRotation();
-
+        Debug.Log("Life: " + Life);
     }
 
     private void HittedByEnemy1Animation()
     {
+        if(Life <= 0 )
+        {
+            //die
+        }
         if(Enemy1._mainCharacterHitted == true)
         {
             _animator.SetBool("isHitted",true);
+            Life -= 1;
         }
         else
         {

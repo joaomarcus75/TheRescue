@@ -10,6 +10,7 @@ public class Enemy1 : MonoBehaviour
     private float _temporaryVelocityY;
     private float _speed = 2f;
     public static bool _mainCharacterHitted;
+    
    // public static bool _mainCharacterHitStatus;
 
   
@@ -62,8 +63,8 @@ public class Enemy1 : MonoBehaviour
             _colider.isTrigger = false;
             _mainCharacterHitted = true;
             _navMeshAgent.speed = 0f;
-           //USE RAGDOLL SYSTEM TO MAKE OUR MAIN CHARACTER BE HITTED
-            //Debug.Log(_mainCharacterHitted);
+      
+            
         }
          
 

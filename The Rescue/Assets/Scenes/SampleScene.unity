@@ -2410,15 +2410,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6367500355248394995, guid: a42ad6a4668ecfb44a1f036838e43f67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 302.52
+      value: 301.99
       objectReference: {fileID: 0}
     - target: {fileID: 6367500355248394995, guid: a42ad6a4668ecfb44a1f036838e43f67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 154.91
+      value: 149.81
       objectReference: {fileID: 0}
     - target: {fileID: 6367500355248394995, guid: a42ad6a4668ecfb44a1f036838e43f67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 198.5
+      value: 206.5
       objectReference: {fileID: 0}
     - target: {fileID: 6367500355248394995, guid: a42ad6a4668ecfb44a1f036838e43f67, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14724,6 +14724,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2696b4b332cebc488388c3f70b624ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  _enemy1: {fileID: 0}
   _speed: 1
   _gravity: 1
   jumpspeed: 17

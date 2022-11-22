@@ -9,7 +9,6 @@ public class MainCharacter : MonoBehaviour
     private CharacterController _controller;
     public Animator _animator;
     public Enemy1 _enemy1;
-    public float Life = 3.0f;
     
     
     Vector3 lookPos;
@@ -17,6 +16,7 @@ public class MainCharacter : MonoBehaviour
     
     [SerializeField] private float _speed = 2f;
     [SerializeField]private float _gravity = 1f;
+    private float Life = 1.0f;
    
     [SerializeField]private float jumpspeed = 5f;
     public float _temporaryVelocityY;
@@ -67,7 +67,7 @@ public class MainCharacter : MonoBehaviour
         {
             if(ragdollPrefab != null)
             {
-                
+
             Instantiate(ragdollPrefab, transform.position,transform.rotation);
             }
             this.gameObject.SetActive(false);

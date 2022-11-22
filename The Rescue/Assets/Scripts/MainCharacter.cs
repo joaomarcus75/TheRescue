@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class MainCharacter : MonoBehaviour
 {
+    [SerializeField] private Transform ragdollPrefab;
     private CharacterController _controller;
     public Animator _animator;
     public Enemy1 _enemy1;
-    public int Life = 3;
+    public float Life = 3.0f;
     
     
     Vector3 lookPos;
@@ -56,18 +57,25 @@ public class MainCharacter : MonoBehaviour
 
         CharacterRotation();
         Debug.Log("Life: " + Life);
+
+       
     }
 
     private void HittedByEnemy1Animation()
     {
         if(Life <= 0 )
         {
-            //die
+            if(ragdollPrefab != null)
+            {
+                
+            Instantiate(ragdollPrefab, transform.position,transform.rotation);
+            }
+            this.gameObject.SetActive(false);
         }
         if(Enemy1._mainCharacterHitted == true)
         {
             _animator.SetBool("isHitted",true);
-            Life -= 1;
+            Life -= 0.1f;
         }
         else
         {

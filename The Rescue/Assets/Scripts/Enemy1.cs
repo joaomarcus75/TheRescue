@@ -15,7 +15,7 @@ public class Enemy1 : MonoBehaviour
 
   
     
-    
+    private MainCharacter _mainCharacter;
     private CharacterController _controller;
     [SerializeField] private Transform movePositionTransform;
     private NavMeshAgent _navMeshAgent;
@@ -38,6 +38,7 @@ public class Enemy1 : MonoBehaviour
        _controller = GetComponent<CharacterController>(); 
        _animator = GetComponent<Animator>();
        _colider = GetComponent<Collider>();
+       _mainCharacter = GetComponent<MainCharacter>();
       
     }
 
@@ -47,6 +48,8 @@ public class Enemy1 : MonoBehaviour
        NavMeshEnemy();
        
     }
+
+    
 
     void NavMeshEnemy()
     {
@@ -63,7 +66,16 @@ public class Enemy1 : MonoBehaviour
             _colider.isTrigger = false;
             _mainCharacterHitted = true;
             _navMeshAgent.speed = 0f;
-      
+           if(MainCharacter.MainCharacterIsDead == true)
+           {
+            _navMeshAgent.speed = 0f;
+             _animator.SetBool("EnemyIdle",true);
+           }
+           else
+           {
+            _navMeshAgent.speed = 4f;
+            _animator.SetBool("EnemyIdle",false);
+           }
             
         }
          

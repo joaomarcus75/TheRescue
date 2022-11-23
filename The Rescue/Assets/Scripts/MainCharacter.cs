@@ -22,6 +22,7 @@ public class MainCharacter : MonoBehaviour
     public float _temporaryVelocityY;
 
     bool isTouchingGround;
+    public static bool MainCharacterIsDead;
    
 
     Vector3 direction;
@@ -69,18 +70,19 @@ public class MainCharacter : MonoBehaviour
             {
 
             Instantiate(ragdollPrefab, transform.position,transform.rotation);
+             MainCharacterIsDead = true;
             }
             this.gameObject.SetActive(false);
         }
         if(Enemy1._mainCharacterHitted == true)
-        {
-            _animator.SetBool("isHitted",true);
-            Life -= 0.1f;
-        }
-        else
-        {
-            _animator.SetBool("isHitted",false);
-        }
+         {
+             _animator.SetBool("isHitted",true);
+             Life -= 0.1f;
+         }
+         else
+         {
+             _animator.SetBool("isHitted",false);
+         }
     }
 
     public void CalculatedMovement()

@@ -1,2 +1,2 @@
 # TheRescue
-The Rescue is a third-person game made in Unity 
+The Rescue is a Top-Down game made in Unity 

@@ -16,13 +16,16 @@ public class MainCharacter : MonoBehaviour
     
     [SerializeField] private float _speed = 2f;
     [SerializeField]private float _gravity = 1f;
-    private float Life = 1.0f;
+    private float Life = 2.0f;
    
     [SerializeField]private float jumpspeed = 5f;
     public float _temporaryVelocityY;
 
     bool isTouchingGround;
+    
     public static bool MainCharacterIsDead;
+    
+    
    
 
     Vector3 direction;
@@ -50,37 +53,45 @@ public class MainCharacter : MonoBehaviour
     
     void Update()
     {
-        //Debug.Log(Enemy1._mainCharacterHitted);
+        
         
         HittedByEnemy1Animation();
-
+    
         CalculatedMovement();
 
         CharacterRotation();
-        Debug.Log("Life: " + Life);
-
+        //Debug.Log("Life: " + Life);
+        
        
     }
 
     private void HittedByEnemy1Animation()
     {
-        if(Life <= 0 )
-        {
-            if(ragdollPrefab != null)
-            {
-
-            Instantiate(ragdollPrefab, transform.position,transform.rotation);
-             MainCharacterIsDead = true;
-            }
-            this.gameObject.SetActive(false);
-        }
+        
         if(Enemy1._mainCharacterHitted == true)
          {
+             if(Life <= 0 )
+            { 
+              
+              MainCharacterIsDead = true;
+              
+               if(ragdollPrefab != null)
+                {
+                  Instantiate(ragdollPrefab, transform.position,transform.rotation);
+                }
+
+              this.gameObject.SetActive(false);
+              
+             
+            }
+
              _animator.SetBool("isHitted",true);
              Life -= 0.1f;
          }
          else
          {
+            
+              MainCharacterIsDead = false;
              _animator.SetBool("isHitted",false);
          }
     }
@@ -111,7 +122,6 @@ void OnControllerColliderHit(ControllerColliderHit hit)
 
     if(hit.gameObject.tag == "Ground")
     {
-        //Debug.Log("Is Grounded"); 
         _animator.SetBool("isFalling",false);
         _animator.SetBool("isFallingToIdle",true);
     }

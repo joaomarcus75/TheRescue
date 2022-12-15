@@ -12,24 +12,22 @@ public class PickUp : MonoBehaviour
     private float _startTimeScale;
     private float _startFixedDeltaTime;
 
+    //private Vector3 _floatingPosition;
    
    
     void OnMouseDown() 
     {
-       // GetComponent<BoxCollider>().enabled = false; 
         GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().freezeRotation = true;
-        this.transform.position = Hand.position;
+        this.transform.position = new Vector3 (this.transform.position.x, 2f, this.transform.position.z);
         this.transform.parent = GameObject.Find("Hand").transform;
         
     }
     void OnMouseUp() 
     {
-       //GetComponent<BoxCollider>().enabled = true;
-       GetComponent<Rigidbody>().AddForce(this.transform.parent.forward * 1000f);
        this.transform.parent = null;
        GetComponent<Rigidbody>().useGravity = true;
-       GetComponent<Rigidbody>().freezeRotation = false;
+       
+       //GetComponent<Rigidbody>().freezeRotation = false;
     }
 
     
